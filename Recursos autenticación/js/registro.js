@@ -10,3 +10,36 @@
  * 8. Si no lo está, guarda el nuevo usuario en localStorage. 
  * 9. Redirige a la página de inicio de sesión tras un registro exitoso.
  */
+
+//-------------1. Capturamos el formulario de registro
+
+const registroForm = document.getElementById('registroForm')
+
+function registrarUsuario(e) {
+    e.preventDefault()
+    const nombreValor = document.getElementById('nombre').value
+    const apellidoValor = document.getElementById('apellido').value
+    const emailValor = document.getElementById('email').value
+    const passwordValor = document.getElementById('password').value
+
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [] //Revisa si hay un usuario existente en el localStorage, si no hay, crea un arreglo vacío
+    const existeUsuario = usuarios.find((usuario) => usuario.email === emailValor)
+    if (existeUsuario) {
+        alert ("El usuario ya está registrado!!!")
+        registroForm.reset()
+        return
+    }
+    const usuario = {
+        nombre: nombreValor,
+        apellido: apellidoValor,
+        email: emailValor,
+        password: passwordValor
+    }
+    usuarios.push(usuario)
+    localStorage.setItem('usuarios',JSON.stringify(usuarios))
+    alert("Registro exitoso :3")
+    window.location.href = 'login.html' //Redirige a la página de inicio de sesión tras un registro exitoso
+    
+}
+
+registroForm.addEventListener('submit', registrarUsuario) 
